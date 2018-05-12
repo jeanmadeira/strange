@@ -35,8 +35,15 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
-        require base_path('routes/console.php');
+        $dirs = array_filter(glob(base_path('routes') . DIRECTORY_SEPARATOR . '*'), 'is_dir');
+        $fileName = 'console.php';
+
+        foreach ($dirs as $dir) {
+            if (file_exists($dir . DIRECTORY_SEPARATOR . $fileName)) {
+                require $dir . DIRECTORY_SEPARATOR . $fileName;
+            }
+        }
     }
 }
